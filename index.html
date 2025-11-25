@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gráfica Editable</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+  <h2>Gráfica de Barras Editable</h2>
+
+  <!-- Inputs para editar valores -->
+  <label>Valores (separados por coma):</label>
+  <input type="text" id="values" value="12, 19, 3, 5, 2, 3" style="width: 300px;"><br><br>
+
+  <label>Etiquetas (separadas por coma):</label>
+  <input type="text" id="labels" value="Rojo, Azul, Amarillo, Verde, Morado, Naranja" style="width: 300px;"><br><br>
+
+  <button onclick="updateChart()">Actualizar gráfica</button>
+
+  <canvas id="myChart" style="margin-top: 30px;"></canvas>
+
+  <script>
+    let chart;
+
+    function createChart(labels, data) {
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Valores',
+            data: data
+          }]
+        }
+      });
+    }
+
+    function updateChart() {
+      const values = document.getElementById('values').value.split(',').map(Number);
+      const labels = document.getElementById('labels').value.split(',');
+
+      createChart(labels, values);
+    }
+
+    updateChart();
+  </script>
+</body>
+</html>
