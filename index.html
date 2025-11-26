@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Resumen de Inversiones</title>
+
+  <!-- ✅ Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    /* ✅ Tamaño más pequeño de la gráfica */
+    #chartContainer {
+      width: 350px;
+      height: 250px;
+    }
+  </style>
 </head>
-<body style="font-family: sans-serif; padding: 20px;">
+
+<body>
   <h2>Gráfica de Barras Editable</h2>
 
-  <!-- Inputs para editar valores -->
   <label>Valores (separados por coma):</label>
   <input type="text" id="values" value="12, 19, 3, 5, 2, 3" style="width: 300px;"><br><br>
 
@@ -16,7 +32,10 @@
 
   <button onclick="updateChart()">Actualizar gráfica</button>
 
-  <canvas id="myChart" style="margin-top: 30px;"></canvas>
+  <!-- ✅ Contenedor para controlar el tamaño -->
+  <div id="chartContainer" style="margin-top: 30px;">
+    <canvas id="myChart"></canvas>
+  </div>
 
   <script>
     let chart;
@@ -24,7 +43,9 @@
     function createChart(labels, data) {
       const ctx = document.getElementById('myChart').getContext('2d');
 
-      if (chart) chart.destroy();
+      if (chart) {
+        chart.destroy();
+      }
 
       chart = new Chart(ctx, {
         type: 'bar',
@@ -34,18 +55,27 @@
             label: 'Valores',
             data: data
           }]
+        },
+        options: {
+          maintainAspectRatio: false
         }
       });
     }
 
-    function updateChart() {
-      const values = document.getElementById('values').value.split(',').map(Number);
-      const labels = document.getElementById('labels').value.split(',');
+    window.updateChart = function () {
+      const values = document.getElementById('values').value
+        .split(',')
+        .map(v => Number(v.trim()));
+
+      const labels = document.getElementById('labels').value
+        .split(',')
+        .map(v => v.trim());
 
       createChart(labels, values);
-    }
+    };
 
     updateChart();
   </script>
+
 </body>
 </html>
